@@ -54,5 +54,5 @@ tasks.withType<Test> {
 }
 
 application {
-    mainClass.set("org.example.App")
+    mainClass.set("yuukafinder.App")
 }
