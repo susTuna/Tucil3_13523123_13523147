@@ -10,15 +10,13 @@ public class Config {
             String[] dims = br.readLine().trim().split("\\s+");
             int A = Integer.parseInt(dims[0]);
             int B = Integer.parseInt(dims[1]);
-            br.readLine();
+            br.readLine(); 
 
             Board board = new Board(A, B);
-            for (int i = 0; i < A; i++) {
+            for (int r = 0; r < A; r++) {
                 String line = br.readLine();
-                for (int j = 0; j < B; j++) {
-                    char ch = line.charAt(j);
-                    if (ch == '.') ch = '.';
-                    board.setCell(i, j, ch);
+                for (int c = 0; c < B; c++) {
+                    board.setCell(r, c, line.charAt(c));
                 }
             }
             return board;
@@ -28,4 +26,3 @@ public class Config {
         }
     }
 }
-
