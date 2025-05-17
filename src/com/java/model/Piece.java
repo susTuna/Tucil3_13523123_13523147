@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Piece {
+    public static int piece_count = 0;
     private final char id;
     private int row, col;
     private int size;
@@ -22,6 +23,7 @@ public class Piece {
         this.size       = size;
         this.horizontal = horizontal;
         this.primary    = primary;
+        piece_count++;
     }
 
     public char getId()        { return id; }

@@ -7,7 +7,7 @@ public class Board {
     private final int rows, cols;
     private final char[][] grid;
     private final Map<Character, Piece> pieces = new HashMap<>();
-    private int exitRow = -1, exitCol = -1;
+    private int exitRow = Integer.MIN_VALUE, exitCol = Integer.MIN_VALUE;
 
     public Board(int rows, int cols) {
         this.rows = rows;
@@ -17,48 +17,46 @@ public class Board {
             Arrays.fill(grid[r], '.');
     }
 
-public void setCell(int r, int c, char ch) {
-    grid[r][c] = ch;
-
-    if (ch == 'X') {
-        // the exit's coordinates
+    public void setExit(int r, int c) {
         exitRow = r;
         exitCol = c;
+    }
 
-    } else if (Character.isLetter(ch)) {
-        // mark P as primary
-        if (!pieces.containsKey(ch)) {
-            pieces.put(ch,
-                new Piece(ch, r, c, 1, true, ch == 'P')
-            );
-        } else {
-            Piece p = pieces.get(ch);
-            int newSize = p.getSize() + 1;
-            boolean horiz = (r == p.getRow());
-            int anchorR = horiz ? p.getRow()
-                                : Math.min(p.getRow(), r);
-            int anchorC = horiz ? Math.min(p.getCol(), c)
-                                : p.getCol();
-            p.setHorizontal(horiz);
-            p.setSize(newSize);
-            p.setPosition(anchorR, anchorC);
+    public void parseCell(int r, int c, char ch) {
+        if (ch == 'X') {
+            setExit(r, c);
+        } else if (Character.isLetter(ch)) {
+            grid[r][c] = ch;
+            if (!pieces.containsKey(ch)) {
+                pieces.put(ch, new Piece(ch, r, c, 1, true, ch == 'P'));
+            } else {
+                Piece p = pieces.get(ch);
+                int newSize   = p.getSize() + 1;
+                boolean horiz = (r == p.getRow());
+                int anchorR   = horiz ? p.getRow() : Math.min(p.getRow(), r);
+                int anchorC   = horiz ? Math.min(p.getCol(), c) : p.getCol();
+                p.setHorizontal(horiz);
+                p.setSize(newSize);
+                p.setPosition(anchorR, anchorC);
+            }
         }
     }
-}
 
-    public char getCell(int r, int c)       { return grid[r][c]; }
-    public int  getExitRow()                { return exitRow; }
-    public int  getExitCol()                { return exitCol; }
-    public int  getRows()                   { return rows; }
-    public int  getCols()                   { return cols; }
-    public Map<Character, Piece> getPieces(){ return pieces; }
+    public char getCell(int r, int c)     { return grid[r][c]; }
+    public int getExitRow()               { return exitRow; }
+    public int getExitCol()               { return exitCol; }
+    public int getRows()                  { return rows; }
+    public int getCols()                  { return cols; }
+    public Map<Character, Piece> getPieces() { return pieces; }
 
     public void printBoard() {
         for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++)
+            for (int c = 0; c < cols; c++) {
                 System.out.print(grid[r][c] + " ");
+            }
             System.out.println();
         }
+        System.out.println("Exit at: (" + exitRow + ", " + exitCol + ")");
     }
 
     public void movePiece(Piece p, int x, int y) throws MoveBlockedException {
@@ -74,7 +72,7 @@ public void setCell(int r, int c, char ch) {
         int nr = p.getRow() - y;
         int nc = p.getCol() + x;
         boolean horiz = p.isHorizontal();
-        int sz = p.getSize();
+        int sz       = p.getSize();
 
         List<int[]> dest = new ArrayList<>();
         for (int i = 0; i < sz; i++) {
@@ -88,12 +86,14 @@ public void setCell(int r, int c, char ch) {
             dest.add(new int[]{r, c});
         }
 
-        for (int[] cell : p.occupiedCells())
+        for (int[] cell : p.occupiedCells()) {
             grid[cell[0]][cell[1]] = '.';
+        }
 
         p.setPosition(nr, nc);
 
-        for (int[] cell : dest)
+        for (int[] cell : dest) {
             grid[cell[0]][cell[1]] = p.getId();
+        }
     }
 }

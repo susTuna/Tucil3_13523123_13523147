@@ -21,24 +21,16 @@ public class Main {
 
         System.out.println("Initial Board:");
         board.printBoard();
-        System.out.println("Exit at: (" + board.getExitRow()
-                         + ", " + board.getExitCol() + ")\n");
 
         Map<Character, Piece> pcs = board.getPieces();
 
         try {
-            board.movePiece(pcs.get('I'), -1, 0);
-            System.out.println("\nAfter moving 'I' left by 1:");
-            board.printBoard();
-            board.movePiece(pcs.get('F'), 0, -3);
-            System.out.println("\nAfter moving 'F' down by 3:");
-            board.printBoard();
             board.movePiece(pcs.get('C'), 0, 1);
-            System.out.println("\nAfter moving 'C' right by 1:");
-            board.printBoard();
             board.movePiece(pcs.get('D'), 0, 1);
-            System.out.println("\nAfter moving 'D' right by 1:");
+            board.movePiece(pcs.get('P'), 2, 0);
+            board.movePiece(pcs.get('F'), 0, -3);
             board.printBoard();
+            
         } catch (MoveBlockedException | IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }

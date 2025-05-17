@@ -6,28 +6,32 @@ import com.java.model.Piece;
 
 public class PuzzleChecker {
     /**
-     * @return true if P sits on X or has a clear straight-line exit path
-     * @throws InvalidConfigurationException if P is wrongly oriented for that exit
+     * Returns true if:
+     *  - P actually covers the exit (rare, since exit is outside), or
+     *  - there's a straight, empty corridor from P to X in P's orientation.
+     *
+     * Throws if the primary piece is oriented wrong for that exit.
      */
     public static boolean checkSolved(Board board)
       throws InvalidConfigurationException
     {
         Piece p = board.getPieces().get('P');
-        if (p == null) {
+        if (p == null)
             throw new InvalidConfigurationException("No primary piece 'P' found");
-        }
 
         int er = board.getExitRow(), ec = board.getExitCol();
-        int R  = board.getRows(), C = board.getCols();
+        int R  = board.getRows(), C  = board.getCols();
 
-        boolean exitOnVerticalEdge   = (ec == 0 || ec == C - 1);
-        boolean exitOnHorizontalEdge = (er == 0 || er == R - 1);
+        boolean exitLeft   = ec < 0;
+        boolean exitRight  = ec > C - 1;
+        boolean exitTop    = er < 0;
+        boolean exitBottom = er > R - 1;
 
-        if ((exitOnVerticalEdge   && p.isVertical())   ||
-            (exitOnHorizontalEdge && p.isHorizontal()))
+        if (( (exitLeft || exitRight) && p.isVertical() ) ||
+            ( (exitTop  || exitBottom) && p.isHorizontal() ))
         {
             throw new InvalidConfigurationException(
-                "Primary Vehicles Cannot Exit the Compound"
+              "Primary Vehicles Cannot Exit the Compound"
             );
         }
 
@@ -38,25 +42,21 @@ public class PuzzleChecker {
             }
         }
 
-        if (exitOnVerticalEdge && p.isHorizontal() && p.getRow() == er) {
-            int left  = Math.min(p.getCol(), ec);
-            int right = Math.max(p.getCol() + p.getSize() - 1, ec);
-            for (int c = left + 1; c < right; c++) {
-                if (board.getCell(er, c) != '.') {
-                    return false;
-                }
+        if ((exitLeft || exitRight) && p.isHorizontal() && p.getRow() == er) {
+            int start = exitLeft ? 0 : p.getCol() + p.getSize();
+            int end   = exitLeft ? p.getCol() : C;
+            for (int c = start; c < end; c++) {
+                if (board.getCell(er, c) != '.') return false;
             }
             System.out.println("Puzzle solved!");
             return true;
         }
 
-        if (exitOnHorizontalEdge && p.isVertical() && p.getCol() == ec) {
-            int top    = Math.min(p.getRow(), er);
-            int bottom = Math.max(p.getRow() + p.getSize() - 1, er);
-            for (int r = top + 1; r < bottom; r++) {
-                if (board.getCell(r, ec) != '.') {
-                    return false;
-                }
+        if ((exitTop || exitBottom) && p.isVertical() && p.getCol() == ec) {
+            int start = exitTop    ? 0 : p.getRow() + p.getSize();
+            int end   = exitTop    ? p.getRow() : R;
+            for (int r = start; r < end; r++) {
+                if (board.getCell(r, ec) != '.') return false;
             }
             System.out.println("Puzzle solved!");
             return true;
