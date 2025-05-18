@@ -22,9 +22,20 @@ public class Main {
         Scanner sc=new Scanner(System.in);
         System.out.println("Choose algorithm: 1) A* 2) UCS 3) GBFS");
         String choice=sc.nextLine().trim();
-        if(choice.equals("1")) solver=new AStarSolver();
-        else if(choice.equals("2")) solver=new UCSolver();
-        else solver=new GBFSolver();
+        String algorithmName;
+        if(choice.equals("1")) {
+
+            solver=new AStarSolver();
+            algorithmName = "A*";
+        }
+        else if(choice.equals("2")) {
+            solver=new UCSolver();
+            algorithmName = "UCS";
+        }
+        else {
+            solver=new GBFSolver();
+            algorithmName = "GBFS";
+        }
 
         SolverResult res = solver.solve(start);
         List<Move> path=res.path;
@@ -37,5 +48,19 @@ public class Main {
         System.out.println("Elapsed ms: "+res.timeMs);
         System.out.println("Nodes created: "+res.nodesCreated);
         System.out.println("Shortest steps: "+path.size());
+
+        System.out.println("Save solution? (y/n): ");
+        String saveChoice = sc.nextLine().trim();
+
+        // Default is not to save unless user explicitly types 'y' or 'yes'
+        if (saveChoice.equalsIgnoreCase("y") || saveChoice.equalsIgnoreCase("yes")) {
+            System.out.println("Enter filename (without .txt extension):");
+            String filename = sc.nextLine().trim();
+            Save.saveSolution(res, start, filename, args[0], algorithmName);
+            System.out.println("Solution saved to " + filename + ".txt");
+        }
+
+        // Close scanner in all cases
+        sc.close();
     }
 }
