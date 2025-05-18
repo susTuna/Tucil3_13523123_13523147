@@ -25,10 +25,20 @@ public class Main {
         Map<Character, Piece> pcs = board.getPieces();
 
         try {
-            board.movePiece(pcs.get('C'), 0, 1);
-            board.movePiece(pcs.get('D'), 0, 1);
-            board.movePiece(pcs.get('P'), 2, 0);
-            board.movePiece(pcs.get('F'), 0, -3);
+            // 11 steps
+            // board.movePiece(pcs.get('F'), 0, -1);
+            // board.movePiece(pcs.get('I'), 0, 1);
+            // board.movePiece(pcs.get('M'), -1, 0);
+            // board.movePiece(pcs.get('F'), 0, -1);
+            // board.movePiece(pcs.get('E'), 0, -1);
+            // board.movePiece(pcs.get('B'), 1, 0);
+            // board.movePiece(pcs.get('G'), 0, 1);
+            // board.movePiece(pcs.get('G'), 0, 1);
+            // board.movePiece(pcs.get('P'), 1, 0);
+            // board.movePiece(pcs.get('P'), 1, 0);
+            board.movePiece(pcs.get('P'), 1, 0);
+            board.movePiece(pcs.get('P'), -1, 0);
+
             board.printBoard();
             
         } catch (MoveBlockedException | IllegalArgumentException e) {

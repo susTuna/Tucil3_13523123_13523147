@@ -78,11 +78,17 @@ public class Board {
         for (int i = 0; i < sz; i++) {
             int r = nr + (horiz ? 0 : i);
             int c = nc + (horiz ? i : 0);
-            if (r < 0 || r >= rows || c < 0 || c >= cols)
-                throw new MoveBlockedException(null);
+            if (r < 0 || r >= rows || c < 0 || c >= cols) {
+                System.out.println("\nMove out of bounds: (" + r + ", " + c + ")");
+                printBoard(); 
+                throw new MoveBlockedException(null); 
+            }
             char occ = grid[r][c];
-            if (occ != '.' && occ != p.getId())
+            if (occ != '.' && occ != p.getId()) {
+                System.out.println("\nMove blocked by piece: " + occ);
+                printBoard(); 
                 throw new MoveBlockedException(pieces.get(occ));
+            }
             dest.add(new int[]{r, c});
         }
 

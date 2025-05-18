@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/* 
+To DO: 
+1. If there's a piece where it's only a dot, the orientation will be assigned in accordance to where to exit is
+  e.g. If exit on left/right the orientation will be horizontal, if exit on top/bottom the orientation will be vertical
+
+*/
+
 public class Piece {
     public static int piece_count = 0;
     private final char id;

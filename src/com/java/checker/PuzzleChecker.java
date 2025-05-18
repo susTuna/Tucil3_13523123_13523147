@@ -12,15 +12,20 @@ public class PuzzleChecker {
      *
      * Throws if the primary piece is oriented wrong for that exit.
      */
-    public static boolean checkSolved(Board board)
+   public static boolean checkSolved(Board board)
       throws InvalidConfigurationException
     {
         Piece p = board.getPieces().get('P');
-        if (p == null)
+        if (p == null) {
             throw new InvalidConfigurationException("No primary piece 'P' found");
+        }
 
         int er = board.getExitRow(), ec = board.getExitCol();
         int R  = board.getRows(), C  = board.getCols();
+
+        if (er == Integer.MIN_VALUE || ec == Integer.MIN_VALUE) {
+            throw new InvalidConfigurationException("No exit 'X' defined");
+        }
 
         boolean exitLeft   = ec < 0;
         boolean exitRight  = ec > C - 1;
@@ -31,7 +36,7 @@ public class PuzzleChecker {
             ( (exitTop  || exitBottom) && p.isHorizontal() ))
         {
             throw new InvalidConfigurationException(
-              "Primary Vehicles Cannot Exit the Compound"
+                "Primary Vehicles Cannot Exit the Compound"
             );
         }
 
@@ -46,7 +51,9 @@ public class PuzzleChecker {
             int start = exitLeft ? 0 : p.getCol() + p.getSize();
             int end   = exitLeft ? p.getCol() : C;
             for (int c = start; c < end; c++) {
-                if (board.getCell(er, c) != '.') return false;
+                if (board.getCell(er, c) != '.') {
+                    return false;
+                }
             }
             System.out.println("Puzzle solved!");
             return true;
@@ -56,7 +63,9 @@ public class PuzzleChecker {
             int start = exitTop    ? 0 : p.getRow() + p.getSize();
             int end   = exitTop    ? p.getRow() : R;
             for (int r = start; r < end; r++) {
-                if (board.getCell(r, ec) != '.') return false;
+                if (board.getCell(r, ec) != '.') {
+                    return false;
+                }
             }
             System.out.println("Puzzle solved!");
             return true;
