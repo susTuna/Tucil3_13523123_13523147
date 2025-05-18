@@ -28,10 +28,16 @@ public class GBFSolver implements SearchStrategy {
             }
             nodes++;
             closed.add(cur.state);
+            List<Node> successors = new ArrayList<>();
             for(Move mv:cur.state.successors()){
                 if(!closed.contains(mv.next)){
-                    open.add(new Node(mv.next,cur,mv,0,mv.next.heuristic()));
+                    successors.add(new Node(mv.next,cur,mv,0,mv.next.heuristic()));
                 }
+            }
+            // Limit successors to the k most promising ones
+            successors.sort(Comparator.comparingInt(n -> n.h));
+            for (int i = 0; i < Math.min(3, successors.size()); i++) {
+                open.add(successors.get(i));
             }
         }
         return new SolverResult(List.of(),nodes,System.currentTimeMillis()-t0);
