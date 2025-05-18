@@ -1,5 +1,7 @@
 package com.java.searching;
+
 import java.util.*;
+
 public class SolverResult {
     public final List<Move> path;
     public final long nodesCreated;

@@ -1,4 +1,5 @@
 package com.java.searching;
+
 public class Node {
     public final State state;
     public final Node parent;

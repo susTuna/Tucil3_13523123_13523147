@@ -1,4 +1,5 @@
 package com.java.searching;
+
 public class Move {
     public final int dr, dc;
     public final char id;
