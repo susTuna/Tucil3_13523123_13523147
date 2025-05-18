@@ -49,15 +49,89 @@ public class Board {
     public int getCols()                  { return cols; }
     public Map<Character, Piece> getPieces() { return pieces; }
 
-    public void printBoard() {
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                System.out.print(grid[r][c] + " ");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        final String[] COLORS = {
+            "\u001B[32m", // GREEN (0)
+            "\u001B[33m", // YELLOW (1)
+            "\u001B[34m", // BLUE (2)
+            "\u001B[35m", // PURPLE (3)
+            "\u001B[36m", // CYAN (4)
+            "\u001B[90m", // BRIGHT_BLACK (5)
+            "\u001B[92m", // BRIGHT_GREEN (6)
+            "\u001B[93m", // BRIGHT_YELLOW (7)
+            "\u001B[94m", // BRIGHT_BLUE (8)
+            "\u001B[95m", // BRIGHT_PURPLE (9)
+            "\u001B[96m", // BRIGHT_CYAN (10)
+            "\u001B[97m", // BRIGHT_WHITE (11)
+            "\u001B[30m"  // BLACK (12)
+        };
+        
+        final String RESET = "\u001B[0m";
+        final String WHITE = "\u001B[37m";
+        final String RED = "\u001B[31m";
+        
+        sb.append(WHITE).append("+").append("-".repeat(this.getCols())).append("+").append(RESET).append("\n");
+        
+        for (int r = 0; r < this.getRows(); r++) {
+            sb.append(WHITE).append("|").append(RESET);
+            for (int c = 0; c < this.getCols(); c++) {
+                char cell = this.getCell(r, c);
+                
+                if (cell == '.') {
+                    sb.append(WHITE).append(cell).append(RESET);
+                } else if (cell == 'P') {
+                    sb.append(RED).append(cell).append(RESET);
+                } else {
+                    int colorIndex = cell % COLORS.length;
+                    sb.append(COLORS[colorIndex]).append(cell).append(RESET);
+                }
             }
-            System.out.println();
+            sb.append(WHITE).append("|").append(RESET).append("\n");
         }
-        System.out.println("Exit at: (" + exitRow + ", " + exitCol + ")");
+        
+        sb.append(WHITE).append("+").append("-".repeat(this.getCols())).append("+").append(RESET);
+        
+        sb.append("\n").append(WHITE).append("Exit at: (")
+          .append(this.getExitRow()).append(", ").append(this.getExitCol()).append(")")
+          .append(RESET);
+        
+        return sb.toString();
     }
+    
+        
+    public String toPlainString() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("+");
+        for (int c = 0; c < this.getCols(); c++) {
+            sb.append("-");
+        }
+        sb.append("+\n");
+        
+        for (int r = 0; r < this.getRows(); r++) {
+            sb.append("|");
+            for (int c = 0; c < this.getCols(); c++) {
+                sb.append(this.getCell(r, c));
+            }
+            sb.append("|\n");
+        }
+        
+        sb.append("+");
+        for (int c = 0; c < this.getCols(); c++) {
+            sb.append("-");
+        }
+        sb.append("+");
+        
+        sb.append("\nExit at: (")
+          .append(exitRow).append(", ").append(exitCol).append(")");
+        
+        return sb.toString();
+    }
+
+    public void printBoard() { System.out.println(this.toString()); }
 
     public void movePiece(Piece p, int x, int y) throws MoveBlockedException {
         if (p.getSize() > 1) {
