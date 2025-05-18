@@ -29,27 +29,31 @@ public class Config {
 
             for (String line : lines) {
                 int xIdx = line.indexOf('X');
-                if (xIdx >= 0) {
-                    if (exitFound) {
-                        throw new InvalidConfigurationException("Multiple exits 'X' found");
-                    }
-                    if (gridRowsSeen < A) {
-                        if (gridRowsSeen == 0 && line.trim().equals("X")) {
-                            board.setExit(-1, xIdx);
-                        }
-                        else if (line.length() > B) {
-                            board.setExit(gridRowsSeen, xIdx);
-                            for (int c = 0; c < B; c++) {
-                                board.parseCell(gridRowsSeen, c, line.charAt(c));
-                            }
-                            gridRowsSeen++;
-                        }
-                        else {
-                            board.setExit(gridRowsSeen, xIdx);
+
+                if (!exitFound
+                    && gridRowsSeen < A
+                    && xIdx >= 0
+                    && line.length() == B + 1
+                    && (xIdx == 0 || xIdx == B))
+                {
+                    int row = gridRowsSeen;
+                    int col = xIdx == 0 ? -1 : B;
+                    board.setExit(row, col);
+                    if (xIdx == 0) {
+                        for (int c = 0; c < B; c++) {
+                            board.parseCell(row, c, line.charAt(c + 1));
                         }
                     } else {
-                        board.setExit(A, xIdx);
+                        for (int c = 0; c < B; c++) {
+                            board.parseCell(row, c, line.charAt(c));
+                        }
                     }
+                    gridRowsSeen++;
+                    exitFound = true;
+
+                } else if (xIdx >= 0 && line.trim().equals("X") && !exitFound) {
+                    int row = gridRowsSeen == 0 ? -1 : A;
+                    board.setExit(row, line.indexOf('X'));
                     exitFound = true;
 
                 } else if (gridRowsSeen < A) {

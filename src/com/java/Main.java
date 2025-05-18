@@ -36,8 +36,7 @@ public class Main {
             // board.movePiece(pcs.get('G'), 0, 1);
             // board.movePiece(pcs.get('P'), 1, 0);
             // board.movePiece(pcs.get('P'), 1, 0);
-            board.movePiece(pcs.get('P'), 1, 0);
-            board.movePiece(pcs.get('P'), -1, 0);
+            board.movePiece(pcs.get('P'), 0, 0);
 
             board.printBoard();
             
