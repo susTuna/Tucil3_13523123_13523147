@@ -1,52 +1,41 @@
 package com.java;
 
-import com.java.checker.PuzzleChecker;
-import com.java.exception.*;
 import com.java.model.*;
-import java.util.Map;
+import com.java.searching.*;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args)
-        throws InvalidConfigurationException, PuzzleNotSolvedException
+      throws Exception
     {
-        if (args.length < 1) {
+        if(args.length<1){
             System.out.println("Usage: java Main <config-file>");
             System.exit(1);
         }
-        Board board = Config.loadConfig(args[0]);
-        if (board == null) {
-            System.err.println("Failed to load board configuration.");
-            System.exit(2);
-        }
-
+        Board board=Config.loadConfig(args[0]);
         System.out.println("Initial Board:");
         board.printBoard();
 
-        Map<Character, Piece> pcs = board.getPieces();
+        State start=new State(board);
+        SearchStrategy solver;
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Choose algorithm: 1) A* 2) UCS 3) GBFS");
+        String choice=sc.nextLine().trim();
+        if(choice.equals("1")) solver=new AStarSolver();
+        else if(choice.equals("2")) solver=new UCSolver();
+        else solver=new GBFSolver();
 
-        try {
-            // 11 steps
-            // board.movePiece(pcs.get('F'), 0, -1);
-            // board.movePiece(pcs.get('I'), 0, 1);
-            // board.movePiece(pcs.get('M'), -1, 0);
-            // board.movePiece(pcs.get('F'), 0, -1);
-            // board.movePiece(pcs.get('E'), 0, -1);
-            // board.movePiece(pcs.get('B'), 1, 0);
-            // board.movePiece(pcs.get('G'), 0, 1);
-            // board.movePiece(pcs.get('G'), 0, 1);
-            // board.movePiece(pcs.get('P'), 1, 0);
-            // board.movePiece(pcs.get('P'), 1, 0);
-            board.movePiece(pcs.get('P'), 0, 0);
+        SolverResult res = solver.solve(start);
+        List<Move> path=res.path;
 
-            board.printBoard();
-            
-        } catch (MoveBlockedException | IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        State cur=start;
+        for(Move mv:path){
+            cur=mv.next;
+            cur.getBoard().printBoard();
         }
-        
-        boolean solved = PuzzleChecker.checkSolved(board);
-        if (!solved) {
-            throw new PuzzleNotSolvedException();
-        }
+        System.out.println("Elapsed ms: "+res.timeMs);
+        System.out.println("Nodes created: "+res.nodesCreated);
+        System.out.println("Shortest steps: "+path.size());
     }
 }
