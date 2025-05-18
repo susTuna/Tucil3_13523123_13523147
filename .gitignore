@@ -1,5 +1,5 @@
 # Ignore compiled classes in bin except the directory itself
-.class
+*.class
 
 # IDE files
 .idea/
