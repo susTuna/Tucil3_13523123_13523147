@@ -38,18 +38,23 @@ public class Main {
             algorithmName = "GBFS";
         }
 
-        System.out.println("Choose heuristic: 1) Composite 2) Manhattan 3) Pattern");
-        String heuristicChoice=sc.nextLine().trim();
+        if (!algorithmName.equals("UCS")){
+            System.out.println("Choose heuristic: 1) Composite 2) Manhattan 3) Pattern 4) Enhanced Blocking");
+            String heuristicChoice=sc.nextLine().trim();
 
-        if (heuristicChoice.equals("2")) {
-            State.setHeuristic(HeuristicType.MANHATTAN);
-            System.out.println("Using Manhattan Distance Heuristic");
-        } else if (heuristicChoice.equals("3")) {
-            State.setHeuristic(HeuristicType.PATTERN);
-            System.out.println("Using Pattern Database Heuristic");
-        } else {
-            State.setHeuristic(HeuristicType.COMPOSITE);
-            System.out.println("Using Standard Heuristic");
+            if (heuristicChoice.equals("2")) {
+                State.setHeuristic(HeuristicType.MANHATTAN);
+                System.out.println("Using Manhattan Distance Heuristic");
+            } else if (heuristicChoice.equals("3")) {
+                State.setHeuristic(HeuristicType.PATTERN);
+                System.out.println("Using Pattern Database Heuristic");
+            } else if (heuristicChoice.equals("4")) {
+                State.setHeuristic(HeuristicType.BLOCKING);
+                System.out.println("Using Enhanced Blocking Heuristic");
+            } else {
+                State.setHeuristic(HeuristicType.COMPOSITE);
+                System.out.println("Using Standard Heuristic");
+            }
         }
 
         SolverResult res = solver.solve(start);
