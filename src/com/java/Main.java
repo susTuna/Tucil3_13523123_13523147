@@ -2,6 +2,7 @@ package com.java;
 
 import com.java.model.*;
 import com.java.searching.*;
+import com.java.searching.heuristic.HeuristicType;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,6 +36,17 @@ public class Main {
         else {
             solver=new GBFSolver();
             algorithmName = "GBFS";
+        }
+
+        System.out.println("Choose heuristic: 1) Composite 2) Manhattan");
+        String heuristicChoice=sc.nextLine().trim();
+
+        if (heuristicChoice.equals("2")) {
+            State.setHeuristic(HeuristicType.MANHATTAN);
+            System.out.println("Using Manhattan Distance Heuristic");;
+        } else {
+            State.setHeuristic(HeuristicType.COMPOSITE);
+            System.out.println("Using Standard Heuristic");
         }
 
         SolverResult res = solver.solve(start);
