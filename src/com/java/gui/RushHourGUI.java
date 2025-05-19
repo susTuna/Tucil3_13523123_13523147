@@ -23,7 +23,7 @@ public class RushHourGUI extends JFrame {
     
     public RushHourGUI() {
         setTitle("YuukaFinder: Rush Hour Solver");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EKIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
         

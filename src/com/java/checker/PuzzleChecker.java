@@ -8,7 +8,7 @@ public class PuzzleChecker {
     /**
      * Returns true if:
      *  - P actually covers the exit (rare, since exit is outside), or
-     *  - there's a straight, empty corridor from P to X in P's orientation.
+     *  - there's a straight, empty corridor from P to K in P's orientation.
      *
      * Throws if the primary piece is oriented wrong for that exit.
      */
@@ -24,7 +24,7 @@ public class PuzzleChecker {
         int R  = board.getRows(), C  = board.getCols();
 
         if (er == Integer.MIN_VALUE || ec == Integer.MIN_VALUE) {
-            throw new InvalidConfigurationException("No exit 'X' defined");
+            throw new InvalidConfigurationException("No exit 'K' defined");
         }
 
         boolean exitLeft   = ec < 0;

@@ -17,7 +17,7 @@ public class State {
                 sb.append(b.getCell(r, c));
             }
         }
-        sb.append("X").append(b.getExitRow()).append(",").append(b.getExitCol());
+        sb.append("K").append(b.getExitRow()).append(",").append(b.getExitCol());
         this.key = sb.toString();
     }
     public Board getBoard() { return board; }

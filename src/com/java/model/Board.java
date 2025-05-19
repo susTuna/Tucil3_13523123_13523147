@@ -23,7 +23,7 @@ public class Board {
     }
 
     public void parseCell(int r, int c, char ch) {
-        if (ch == 'X') {
+        if (ch == 'K') {
             setExit(r, c);
         } else if (Character.isLetter(ch)) {
             grid[r][c] = ch;

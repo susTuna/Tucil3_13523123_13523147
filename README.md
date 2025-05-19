@@ -50,7 +50,7 @@ Puzzles are defined in text files with the following format:
 rows cols
 num_pieces
 [board configuration]
-X
+K
 ```
 
 Example:
@@ -59,7 +59,7 @@ Example:
 11
 AAB..F
 ..BCDF
-GPPCDFX
+GPPCDFK
 GH.III
 GHJ...
 LLJMM.
@@ -69,7 +69,7 @@ Where:
 - First line: Board dimensions (rows × columns)
 - Second line: Number of non-primary pieces
 - Next lines: Board configuration with pieces represented by letters (P is primary)
-- X: Exit position (can be inline or separate)
+- K: Exit position (can be inline or separate)
 
 ## Algorithm Comparison
 

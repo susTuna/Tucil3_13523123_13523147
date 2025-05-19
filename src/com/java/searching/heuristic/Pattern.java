@@ -77,7 +77,7 @@ public class Pattern implements Heuristic {
                 .append(p.isHorizontal() ? "H" : "V").append(";");
         }
         
-        hash.append("X:").append(er).append(",").append(ec).append(";");
+        hash.append("K:").append(er).append(",").append(ec).append(";");
         
         if (pattern == patterns.get(1)) {
             if (p.isHorizontal()) {

@@ -4,3 +4,5 @@
 # IDE files
 .idea/
 .vscode/
+
+test/solutions/*.txt
