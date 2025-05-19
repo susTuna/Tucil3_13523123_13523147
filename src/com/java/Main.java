@@ -38,12 +38,15 @@ public class Main {
             algorithmName = "GBFS";
         }
 
-        System.out.println("Choose heuristic: 1) Composite 2) Manhattan");
+        System.out.println("Choose heuristic: 1) Composite 2) Manhattan 3) Pattern");
         String heuristicChoice=sc.nextLine().trim();
 
         if (heuristicChoice.equals("2")) {
             State.setHeuristic(HeuristicType.MANHATTAN);
-            System.out.println("Using Manhattan Distance Heuristic");;
+            System.out.println("Using Manhattan Distance Heuristic");
+        } else if (heuristicChoice.equals("3")) {
+            State.setHeuristic(HeuristicType.PATTERN);
+            System.out.println("Using Pattern Database Heuristic");
         } else {
             State.setHeuristic(HeuristicType.COMPOSITE);
             System.out.println("Using Standard Heuristic");

@@ -41,8 +41,8 @@ public class State {
 
     public int heuristic() {
         switch (currentHeuristic) {
-            case COMPOSITE:
-                return new Composite().calculate(this);
+            case PATTERN:
+                return new Pattern().calculate(this);
             case MANHATTAN:
                 return new Manhattan().calculate(this);
             default:
