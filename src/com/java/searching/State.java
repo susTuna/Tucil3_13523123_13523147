@@ -45,6 +45,8 @@ public class State {
                 return new Pattern().calculate(this);
             case MANHATTAN:
                 return new Manhattan().calculate(this);
+            case BLOCKING:
+                return new EBlocking().calculate(this);
             default:
                 return new Composite().calculate(this);
         

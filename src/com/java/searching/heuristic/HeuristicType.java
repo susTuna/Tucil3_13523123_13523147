@@ -6,4 +6,5 @@ public enum HeuristicType {
     COMPOSITE, // Original heuristic (Distance + Blockers)
     MANHATTAN, // Manhattan distance heuristic
     PATTERN, // Pattern database heuristic
+    BLOCKING // Enhanced blocking heuristic
 }
