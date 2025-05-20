@@ -23,7 +23,7 @@ public class RushHourGUI extends JFrame {
     
     public RushHourGUI() {
         setTitle("YuukaFinder: Rush Hour Solver");
-        setDefaultCloseOperation(JFrame.EKIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
         
@@ -177,7 +177,7 @@ public class RushHourGUI extends JFrame {
             
         if (filename != null && !filename.trim().isEmpty()) {
             try {
-                Save.saveSolution(result, initialState, filename, "GUI", algorithmName);
+                Save.saveSolution(result, initialState, filename, "GUI", algorithmName, State.getHeuristicType()) ;
                 JOptionPane.showMessageDialog(this, 
                     "Solution saved to test/solutions/" + filename + ".txt", 
                     "Save Success", JOptionPane.INFORMATION_MESSAGE);

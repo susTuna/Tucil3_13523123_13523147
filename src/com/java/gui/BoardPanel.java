@@ -109,7 +109,7 @@ public class BoardPanel extends JPanel {
         }
         
         g.setColor(Color.WHITE);
-        g.drawString("EKIT", startK + exitCol * cellSize + cellSize/2 - 15,
+        g.drawString("EXIT", startK + exitCol * cellSize + cellSize/2 - 15,
                    startY + exitRow * cellSize + cellSize/2 + 5);
         
         for (int r = 0; r < rows; r++) {
