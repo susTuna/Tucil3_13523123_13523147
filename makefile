@@ -1,49 +1,66 @@
-# Makefile for Rush Hour Solver
+# Makefile for Rush Hour Solver (Swing + JavaFX GUI)
 
-# Compiler and flags
-JAVAC = javac
-JAVA = java
-JFLAGS = -d bin -cp src
-SRCDIR = src
-BINDIR = bin
-MAIN = com.java.Main
+# ── Java / JavaFX toolchain
+JAVAC       := javac
+JAVA        := java
+# update this to point at your local JavaFX SDK lib folder
+JAVAFX_LIB  := /path/to/javafx-sdk/lib
+JAVAFX_MODS := javafx.swing,javafx.media
 
-# Default target
-all: clean compile
+# ── Directory layout
+SRCDIR  := src
+BINDIR  := bin
+RESDIR  := resources
 
-# Clean the bin directory
+# ── Main entry point
+MAIN    := com.java.Main
+
+# ── Compiler & runtime flags
+JFLAGS  := --module-path $(JAVAFX_LIB) \
+           --add-modules $(JAVAFX_MODS) \
+           -d $(BINDIR)
+RFLAGS  := --module-path $(JAVAFX_LIB) \
+           --add-modules $(JAVAFX_MODS) \
+           -cp $(BINDIR)
+
+# ── Phony targets
+.PHONY: all clean compile resources run help
+
+# Default: clean, compile everything, copy resources
+all: clean compile resources
+
+# Remove and recreate bin/
 clean:
-	@echo "Cleaning previous build..."
-	@rm -rf $(BINDIR)/*.class $(BINDIR)/com
+	@echo "Cleaning $(BINDIR)..."
+	@rm -rf $(BINDIR)
 	@mkdir -p $(BINDIR)
 
-# Compile the source code
+# Compile every .java under src/
 compile:
-	@echo "Compiling Java files..."
-	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/Main.java
-	@echo "Compilation successful!"
-	@echo ""
-	@echo "To run the program with a puzzle file:"
-	@echo "make run PUZZLE=test/your-puzzle-file.txt"
+	@echo "Compiling Java sources..."
+	@find $(SRCDIR) -name '*.java' > .sources
+	@$(JAVAC) $(JFLAGS) @.sources
+	@rm -f .sources
+	@echo "Compilation complete."
 
-# Run the program
+# Copy fonts/, videos/, etc. so VideoBackground can load them
+resources:
+	@echo "Copying resources → $(BINDIR)/resources/"
+	@cp -r $(RESDIR) $(BINDIR)/
+	@echo "Resources copied."
+
+# Launch the GUI
 run:
-	@if [ "$(PUZZLE)" = "" ]; then \
-		echo "Usage: make run PUZZLE=<puzzle-file>"; \
-		echo "Example: make run PUZZLE=test/test0.txt"; \
-		exit 1; \
-	fi
-	@$(JAVA) -cp $(BINDIR) $(MAIN) $(PUZZLE)
+	@echo "Starting Rush Hour Solver GUI…"
+	@$(JAVA) $(RFLAGS) $(MAIN)
 
-# Help message
+# Help screen
 help:
-	@echo "Rush Hour Solver Build System"
+	@echo "Rush Hour Solver Build"
 	@echo ""
-	@echo "Available targets:"
-	@echo "  make all     - Clean and compile"
-	@echo "  make clean   - Remove compiled files"
-	@echo "  make compile - Compile the source code"
-	@echo "  make run PUZZLE=<file> - Run with specified puzzle file"
-	@echo "  make help    - Show this help message"
-
-.PHONY: all clean compile run help
+	@echo "  make all        # clean, compile, copy resources"
+	@echo "  make clean      # remove and recreate $(BINDIR)"
+	@echo "  make compile    # compile all Java sources"
+	@echo "  make resources  # copy resources into bin/"
+	@echo "  make run        # launch the GUI"
+	@echo "  make help       # this message"
