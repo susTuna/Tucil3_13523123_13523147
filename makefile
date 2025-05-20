@@ -4,7 +4,7 @@
 JAVAC       := javac
 JAVA        := java
 # update this to point at your local JavaFX SDK lib folder
-JAVAFX_LIB  := /home/sustuna/Downloads/javafx-sdk-21.0.6/lib
+JAVAFX_LIB  := /path/to/JavaFX/lib
 JAVAFX_MODS := javafx.swing,javafx.media
 
 # ── Directory layout

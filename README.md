@@ -35,7 +35,12 @@ YuukaFinder is a path finding visualization tool developed specifically for solv
 
 ## Setup & Running
 
-### Using Makefile (Linux/macOS)
+### Using Makefile (Linux/macOS/minGW)
+```bash
+# Replace /path/to/JavaFX/lib with your JavaFX/lib directory
+JAVAFX_LIB  := /path/to/JavaFX/lib
+```
+
 ```bash
 # Compile the code
 make compile
