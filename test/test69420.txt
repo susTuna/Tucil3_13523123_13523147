@@ -1,0 +1,9 @@
+6 6
+12
+  K
+AABBBC
+DEEFFC
+DGPHHI
+.GP..I
+JJJZZI
+...MMM
