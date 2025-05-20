@@ -8,28 +8,43 @@ YuukaFinder is a path finding visualization tool developed specifically for solv
 - 13523147 - Frederiko Eldad Mugiyono
 
 ## Features
-- Three search algorithms:
+- Four search algorithms:
   - A* Search (A*)
   - Uniform Cost Search (UCS)
   - Greedy Best-First Search (GBFS)
-- Colorized board visualization in terminal
+  - Iterative Deepening A* Search (IDA*)
+- Multiple heuristic options:
+  - Composite (default)
+  - Manhattan Distance
+  - Pattern Database
+  - Enhanced Blocking
+- Graphical User Interface with:
+  - Animated solution playback
+  - Interactive board visualization
+  - Colorful piece representation
+  - Video background
+- Colorized board visualization in terminal (CLI mode)
 - Solution path tracking and visualization
 - Performance metrics (execution time, nodes expanded)
-- Save solution paths to text files
+- Save solution paths to text and image files
 
 ## Dependencies
 - Java Development Kit (JDK) 11 or higher
-- Terminal with ANSI color support
+- JavaFX SDK 21+ (for GUI version)
+- Terminal with ANSI color support (for CLI version)
 
-## How to Run
+## Setup & Running
 
 ### Using Makefile (Linux/macOS)
 ```bash
 # Compile the code
 make compile
 
-# Run the program with a test file
-make run PUZZLE=test/test0.txt
+# Run the GUI version
+make gui
+
+# Run the CLI version
+make cli PUZZLE=test/test0.txt
 ```
 
 ### Manual Compilation
@@ -40,8 +55,11 @@ mkdir -p bin
 # Compile the code
 javac -d bin -cp src src/com/java/Main.java
 
-# Run the program
-java -cp bin com.java.Main test/test0.txt
+# Run the GUI version
+java --module-path /path/to/javafx-sdk/lib --add-modules javafx.swing,javafx.media --enable-native-access=javafx.graphics,javafx.media -cp bin com.java.Main gui
+
+# Run the CLI version
+java -cp bin com.java.Main cli test/test0.txt
 ```
 
 ## Puzzle Format
@@ -78,6 +96,16 @@ Where:
 | A* | Finds optimal solutions | Higher memory usage |
 | UCS | Guarantees shortest path | Slower for complex puzzles |
 | GBFS | Fast solution finding | May not find optimal path |
+| IDA* | Memory efficient, finds optimal solutions | Can be slower on complex puzzles |
+
+## Heuristic Comparison
+
+| Heuristic | Description | Advantage |
+|-----------|-------------|-----------|
+| Composite | Distance + blocking pieces | Good general performance |
+| Manhattan | Simple distance to exit | Fast calculation, works well for simple puzzles |
+| Pattern Database | Pre-computed pattern costs | Can be very efficient for known patterns |
+| Enhanced Blocking | Advanced blocker detection | Better performance on complex puzzles |
 
 ## Project Structure
 - java - Source code
@@ -85,15 +113,18 @@ Where:
   - `searching/` - Search algorithms implementation
   - `checker/` - Solution validation
   - `exception/` - Custom exceptions
+  - `gui/` - Graphical user interface components
 - test - Test puzzles
 - bin - Compiled class files
-- solutions - Saved solution outputs
+- resources - Images, videos, and fonts
+- test/solutions - Saved solution outputs
 
 ## Algorithm Implementations
 - **A* Search**: Combines path cost and heuristic for evaluation
 - **UCS**: Evaluates nodes based only on path cost
 - **GBFS**: Uses heuristic to prioritize most promising nodes
+- **IDA***: Memory-efficient version of A* using iterative deepening
 
-The heuristic combines:
+The default heuristic combines:
 1. Manhattan distance from primary piece to exit
 2. Number of blocking pieces in the path

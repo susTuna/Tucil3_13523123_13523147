@@ -4,6 +4,7 @@ import com.java.model.Board;
 import com.java.searching.Move;
 import com.java.searching.SolverResult;
 import com.java.searching.State;
+import com.java.searching.heuristic.HeuristicType;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -62,5 +63,12 @@ public class Save {
                 }
             }
         }
+    }
+
+    // Add an overloaded method that takes a HeuristicType:
+    public static void saveSolution(SolverResult result, State initialState, String filename, 
+                                    String originalPuzzle, String algorithmName, HeuristicType heuristicType) 
+            throws IOException {
+        saveSolution(result, initialState, filename, originalPuzzle, algorithmName, heuristicType.toString());
     }
 }

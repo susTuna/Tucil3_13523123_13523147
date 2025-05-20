@@ -1,67 +1,74 @@
-# Makefile for Rush Hour Solver
+# Makefile for Rush Hour Solver (Swing + JavaFX GUI)
 
-# Compiler and flags
-JAVAC = javac
-JAVA = java
-JFLAGS = -d bin -cp src
-SRCDIR = src
-BINDIR = bin
-MAIN = com.java.Main
+# ── Java / JavaFX toolchain
+JAVAC       := javac
+JAVA        := java
+# update this to point at your local JavaFX SDK lib folder
+JAVAFX_LIB  := /home/sustuna/Downloads/javafx-sdk-21.0.6/lib
+JAVAFX_MODS := javafx.swing,javafx.media
 
-# Default target
-all: clean build
+# ── Directory layout
+SRCDIR  := src
+BINDIR  := bin
+RESDIR  := resources
 
-all-gui: clean build-gui
-# Clean the bin directory
+# ── Main entry point
+MAIN    := com.java.Main
+
+# ── Native access flags for JavaFX
+NATIVE_ACCESS := --enable-native-access=javafx.graphics,javafx.media
+
+# Add compilation flags
+JFLAGS  := -d $(BINDIR) -cp $(BINDIR):$(JAVAFX_LIB)/*
+
+# ── Phony targets
+.PHONY: all clean compile resources run help
+
+# Default: clean, compile everything, copy resources
+all: clean compile resources
+
+# Remove and recreate bin/
 clean:
-	@echo "Cleaning previous build..."
-	@rm -rf $(BINDIR)/*.class $(BINDIR)/com
+	@echo "Cleaning $(BINDIR)..."
+	@rm -rf $(BINDIR)
 	@mkdir -p $(BINDIR)
 
-# Compile the source code
-build:
-	@echo "Compiling Java files..."
-	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/Main.java
-	@echo "Compilation successful!"
-	@echo ""
-	@echo "To run the program with a puzzle file:"
-	@echo "make run PUZZLE=test/your-puzzle-file.txt"
+# Compile every .java under src/
+compile:
+	@echo "Compiling Java sources..."
+	@find $(SRCDIR) -name '*.java' > .sources
+	@$(JAVAC) $(JFLAGS) @.sources
+	@rm -f .sources
+	@echo "Compilation complete."
 
-# Compile the GUI source code
-build-gui:
-	@echo "Compiling GUI Java files..."
-	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/gui/MainGUI.java
-	@echo "GUI compilation successful!"
+# Copy fonts/, video/, etc. so VideoBackground can load them
+resources:
+	@echo "Copying resources → $(BINDIR)/resources/"
+	@cp -r $(RESDIR) $(BINDIR)/
+	@echo "Resources copied."
 
-# Build executable JAR with GUI as main class
-jar:
-	@echo "Creating executable JAR..."
-	@mkdir -p $(BINDIR)
-	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/gui/MainGUI.java
-	@jar cvfe bin/YuukaFinder.jar com.java.gui.MainGUI -C bin .
-	@echo "Created executable JAR: bin/YuukaFinder.jar"
-
-# Run the program
+# Launch the GUI
 run:
-	@if [ "$(PUZZLE)" = "" ]; then \
-		echo "Usage: make run PUZZLE=<puzzle-file>"; \
-		echo "Example: make run PUZZLE=test/test0.txt"; \
-		exit 1; \
-	fi
-	@$(JAVA) -cp $(BINDIR) $(MAIN) $(PUZZLE)
+	@echo "Starting Rush Hour Solver GUI…"
+	@$(JAVA) $(NATIVE_ACCESS) --module-path $(JAVAFX_LIB) --add-modules $(JAVAFX_MODS) -cp $(BINDIR) $(MAIN)
 
-run-gui:
-	@java -cp $(BINDIR) com.java.gui.MainGUI
-	
-# Help message
+# Help screen
 help:
-	@echo "Rush Hour Solver Build System"
+	@echo "Rush Hour Solver Build"
 	@echo ""
-	@echo "Available targets:"
-	@echo "  make all     - Clean and compile"
-	@echo "  make clean   - Remove compiled files"
-	@echo "  make compile - Compile the source code"
-	@echo "  make run PUZZLE=<file> - Run with specified puzzle file"
-	@echo "  make help    - Show this help message"
+	@echo "  make all        # clean, compile, copy resources"
+	@echo "  make clean      # remove and recreate $(BINDIR)"
+	@echo "  make compile    # compile all Java sources"
+	@echo "  make resources  # copy resources into bin/"
+	@echo "  make run        # launch the GUI"
+	@echo "  make help       # this message"
 
-.PHONY: all clean compile run help
+# Run with CLI
+.PHONY: cli
+cli: compile
+	$(JAVA) -cp $(BINDIR) com.java.Main cli
+
+# Run with GUI
+.PHONY: gui
+gui: compile
+	$(JAVA) $(NATIVE_ACCESS) --module-path $(JAVAFX_LIB) --add-modules $(JAVAFX_MODS) -cp $(BINDIR) com.java.Main gui
