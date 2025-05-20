@@ -1,0 +1,8 @@
+6 6
+9
+ AA.BB.
+ CC....
+KDEFPP.
+ DEFGGG
+ HHIIIJ
+ .....J
