@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Save {
     public static void saveSolution(SolverResult result, State initialState, String filename, 
-                                    String originalPuzzle, String algorithmName) 
+                                    String originalPuzzle, String algorithmName, String heuristic) 
             throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String fullFilename = filename + "_" + timestamp + ".txt";
@@ -29,6 +29,7 @@ public class Save {
             writer.write("=================\n\n");
             writer.write("Original puzzle: " + originalPuzzle + "\n");
             writer.write("Algorithm: " + algorithmName + "\n");
+            writer.write("Heuristic: " + heuristic + "\n");
             writer.write("Number of moves: " + result.path.size() + "\n");
             writer.write("Nodes created: " + result.nodesCreated + "\n");
             writer.write("Execution time: " + result.timeMs + " ms\n\n");

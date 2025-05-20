@@ -59,4 +59,8 @@ public class State {
     @Override public int hashCode() {
         return key.hashCode();
     }
+
+    public static String getHeuristicType() {
+        return currentHeuristic.toString();
+    }
 }
