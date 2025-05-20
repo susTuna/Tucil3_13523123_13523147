@@ -34,7 +34,7 @@ public class SolverWorker extends SwingWorker<SolverResult, Void> {
             solver = new AStarSolver();
         } else if (algoName.startsWith("Uniform")) {
             solver = new UCSolver();
-        } else if (algoName.startsWith("IDA*")) {
+        } else if (algoName.startsWith("IDA★") || algoName.startsWith("IDA*")) {
             solver = new IDAStarSolver();
         } else {
             solver = new GBFSolver();

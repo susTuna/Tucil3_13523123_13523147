@@ -92,7 +92,7 @@ public class MainMenuPanel extends JPanel {
     }
 
     private void onCalculate() {
-        String[] options = {"A★ Search", "Uniform Cost", "Greedy Best-First", "IDA* Search"};
+        String[] options = {"A★ Search", "Uniform Cost", "Greedy Best-First", "IDA★ Search"};
         String algo = (String) JOptionPane.showInputDialog(
             this,
             "Choose algorithm:",
