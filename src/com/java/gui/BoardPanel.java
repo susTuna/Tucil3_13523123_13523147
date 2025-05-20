@@ -51,7 +51,7 @@ public class BoardPanel extends JPanel {
         pieceColors.put('Z', new Color(135, 206, 235));  // Sky Blue
         
         // Exit marker
-        pieceColors.put('X', Color.GRAY);
+        pieceColors.put('K', Color.GRAY);
     }
     
     public void setBoard(Board board) {
@@ -77,17 +77,17 @@ public class BoardPanel extends JPanel {
         int boardWidth = cellSize * cols;
         int boardHeight = cellSize * rows;
         
-        int startX = (getWidth() - boardWidth) / 2;
+        int startK = (getWidth() - boardWidth) / 2;
         int startY = (getHeight() - boardHeight) / 2;
         
         g.setColor(Color.BLACK);
         for (int r = 0; r <= rows; r++) {
-            g.drawLine(startX, startY + r * cellSize, 
-                       startX + cols * cellSize, startY + r * cellSize);
+            g.drawLine(startK, startY + r * cellSize, 
+                       startK + cols * cellSize, startY + r * cellSize);
         }
         for (int c = 0; c <= cols; c++) {
-            g.drawLine(startX + c * cellSize, startY, 
-                       startX + c * cellSize, startY + rows * cellSize);
+            g.drawLine(startK + c * cellSize, startY, 
+                       startK + c * cellSize, startY + rows * cellSize);
         }
         
         int exitRow = board.getExitRow();
@@ -95,21 +95,21 @@ public class BoardPanel extends JPanel {
         
         g.setColor(Color.RED);
         if (exitCol == cols) { // Exit on right
-            g.fillRect(startX + cols * cellSize, startY + exitRow * cellSize,
+            g.fillRect(startK + cols * cellSize, startY + exitRow * cellSize,
                        cellSize/2, cellSize);
         } else if (exitCol == -1) { // Exit on left
-            g.fillRect(startX - cellSize/2, startY + exitRow * cellSize,
+            g.fillRect(startK - cellSize/2, startY + exitRow * cellSize,
                        cellSize/2, cellSize);
         } else if (exitRow == rows) { // Exit on bottom
-            g.fillRect(startX + exitCol * cellSize, startY + rows * cellSize,
+            g.fillRect(startK + exitCol * cellSize, startY + rows * cellSize,
                        cellSize, cellSize/2);
         } else if (exitRow == -1) { // Exit on top
-            g.fillRect(startX + exitCol * cellSize, startY - cellSize/2,
+            g.fillRect(startK + exitCol * cellSize, startY - cellSize/2,
                        cellSize, cellSize/2);
         }
         
         g.setColor(Color.WHITE);
-        g.drawString("EXIT", startX + exitCol * cellSize + cellSize/2 - 15,
+        g.drawString("EKIT", startK + exitCol * cellSize + cellSize/2 - 15,
                    startY + exitRow * cellSize + cellSize/2 + 5);
         
         for (int r = 0; r < rows; r++) {
@@ -118,12 +118,12 @@ public class BoardPanel extends JPanel {
                 if (cell != '.') {
                     Color pieceColor = pieceColors.getOrDefault(cell, Color.GRAY);
                     g.setColor(pieceColor);
-                    g.fillRect(startX + c * cellSize + 2, 
+                    g.fillRect(startK + c * cellSize + 2, 
                                startY + r * cellSize + 2, 
                                cellSize - 4, cellSize - 4);
                     g.setColor(Color.BLACK);
                     g.drawString(String.valueOf(cell), 
-                                startX + c * cellSize + cellSize/2 - 5, 
+                                startK + c * cellSize + cellSize/2 - 5, 
                                 startY + r * cellSize + cellSize/2 + 5);
                 }
             }

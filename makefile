@@ -4,7 +4,7 @@
 JAVAC       := javac
 JAVA        := java
 # update this to point at your local JavaFX SDK lib folder
-JAVAFX_LIB  := /path/to/javafx-sdk/lib
+JAVAFX_LIB  := /home/sustuna/Downloads/javafx-sdk-21.0.6/lib
 JAVAFX_MODS := javafx.swing,javafx.media
 
 # ── Directory layout
@@ -15,13 +15,11 @@ RESDIR  := resources
 # ── Main entry point
 MAIN    := com.java.Main
 
-# ── Compiler & runtime flags
-JFLAGS  := --module-path $(JAVAFX_LIB) \
-           --add-modules $(JAVAFX_MODS) \
-           -d $(BINDIR)
-RFLAGS  := --module-path $(JAVAFX_LIB) \
-           --add-modules $(JAVAFX_MODS) \
-           -cp $(BINDIR)
+# ── Native access flags for JavaFX
+NATIVE_ACCESS := --enable-native-access=javafx.graphics,javafx.media
+
+# Add compilation flags
+JFLAGS  := -d $(BINDIR) -cp $(BINDIR):$(JAVAFX_LIB)/*
 
 # ── Phony targets
 .PHONY: all clean compile resources run help
@@ -43,7 +41,7 @@ compile:
 	@rm -f .sources
 	@echo "Compilation complete."
 
-# Copy fonts/, videos/, etc. so VideoBackground can load them
+# Copy fonts/, video/, etc. so VideoBackground can load them
 resources:
 	@echo "Copying resources → $(BINDIR)/resources/"
 	@cp -r $(RESDIR) $(BINDIR)/
@@ -52,7 +50,7 @@ resources:
 # Launch the GUI
 run:
 	@echo "Starting Rush Hour Solver GUI…"
-	@$(JAVA) $(RFLAGS) $(MAIN)
+	@$(JAVA) $(NATIVE_ACCESS) --module-path $(JAVAFX_LIB) --add-modules $(JAVAFX_MODS) -cp $(BINDIR) $(MAIN)
 
 # Help screen
 help:
@@ -64,3 +62,13 @@ help:
 	@echo "  make resources  # copy resources into bin/"
 	@echo "  make run        # launch the GUI"
 	@echo "  make help       # this message"
+
+# Run with CLI
+.PHONY: cli
+cli: compile
+	$(JAVA) -cp $(BINDIR) com.java.Main cli
+
+# Run with GUI
+.PHONY: gui
+gui: compile
+	$(JAVA) $(NATIVE_ACCESS) --module-path $(JAVAFX_LIB) --add-modules $(JAVAFX_MODS) -cp $(BINDIR) com.java.Main gui

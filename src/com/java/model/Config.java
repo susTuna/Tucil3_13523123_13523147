@@ -28,7 +28,7 @@ public class Config {
             boolean exitFound = false;
 
             for (String line : lines) {
-                int xIdx = line.indexOf('X');
+                int xIdx = line.indexOf('K');
 
                 if (!exitFound
                     && gridRowsSeen < A
@@ -51,9 +51,9 @@ public class Config {
                     gridRowsSeen++;
                     exitFound = true;
 
-                } else if (xIdx >= 0 && line.trim().equals("X") && !exitFound) {
+                } else if (xIdx >= 0 && line.trim().equals("K") && !exitFound) {
                     int row = gridRowsSeen == 0 ? -1 : A;
-                    board.setExit(row, line.indexOf('X'));
+                    board.setExit(row, line.indexOf('K'));
                     exitFound = true;
 
                 } else if (gridRowsSeen < A) {
@@ -75,7 +75,7 @@ public class Config {
                 );
             }
             if (!exitFound) {
-                throw new InvalidConfigurationException("No exit 'X' found in configuration");
+                throw new InvalidConfigurationException("No exit 'K' found in configuration");
             }
 
             Map<Character, Piece> pcs = board.getPieces();

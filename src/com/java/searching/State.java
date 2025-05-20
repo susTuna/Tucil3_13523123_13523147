@@ -2,11 +2,13 @@ package com.java.searching;
 
 import com.java.model.Board;
 import com.java.model.Piece;
+import com.java.searching.heuristic.*;
 import java.util.*;
 
 public class State {
     private final Board board;
     private final String key;
+    private static HeuristicType currentHeuristic = HeuristicType.COMPOSITE;
     public State(Board b) {
         this.board = b;
         StringBuilder sb = new StringBuilder();
@@ -15,7 +17,7 @@ public class State {
                 sb.append(b.getCell(r, c));
             }
         }
-        sb.append("X").append(b.getExitRow()).append(",").append(b.getExitCol());
+        sb.append("K").append(b.getExitRow()).append(",").append(b.getExitCol());
         this.key = sb.toString();
     }
     public Board getBoard() { return board; }
@@ -32,34 +34,33 @@ public class State {
         }
         return moves;
     }
-    public int heuristic() {
-        Piece p = board.getPieces().get('P');
-        int er = board.getExitRow(), ec = board.getExitCol();
-        int br = p.getRow(), bc = p.getCol(), sz = p.getSize();
-        boolean horiz = p.isHorizontal();
-        int frontR = horiz ? br : br + sz - 1;
-        int frontC = horiz ? bc + sz - 1 : bc;
-        int dist = Math.abs(horiz ? (ec - frontC) : (er - frontR));
-        Set<Character> blockers = new HashSet<>();
-        if (horiz) {
-            int start = Math.min(frontC, ec), end = Math.max(frontC, ec);
-            for (int c = start + 1; c < end; c++) {
-                char ch = board.getCell(br, c);
-                if (ch != '.') blockers.add(ch);
-            }
-        } else {
-            int start = Math.min(frontR, er), end = Math.max(frontR, er);
-            for (int r = start + 1; r < end; r++) {
-                char ch = board.getCell(r, bc);
-                if (ch != '.') blockers.add(ch);
-            }
-        }
-        return dist + blockers.size();
+
+    public static void setHeuristic(HeuristicType heuristic) {
+        currentHeuristic = heuristic;
     }
+
+    public int heuristic() {
+        switch (currentHeuristic) {
+            case PATTERN:
+                return new Pattern().calculate(this);
+            case MANHATTAN:
+                return new Manhattan().calculate(this);
+            case BLOCKING:
+                return new EBlocking().calculate(this);
+            default:
+                return new Composite().calculate(this);
+        
+        }
+    }
+
     @Override public boolean equals(Object o) {
         return o instanceof State && ((State)o).key.equals(key);
     }
     @Override public int hashCode() {
         return key.hashCode();
+    }
+
+    public static String getHeuristicType() {
+        return currentHeuristic.toString();
     }
 }
