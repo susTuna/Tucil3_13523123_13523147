@@ -12,9 +12,9 @@ public class ControlPanel extends JPanel {
     private JButton solveButton;
     private JButton saveButton;
     
-    private RushHourGUI parent;
+    private MainGUI parent;
     
-    public ControlPanel(RushHourGUI parent) {
+    public ControlPanel(MainGUI parent) {
         this.parent = parent;
         setLayout(new FlowLayout());
         initializeComponents();

@@ -8,9 +8,9 @@ public class AnimationPanel extends JPanel {
     private JButton nextButton;
     private JLabel currentStepLabel;
     
-    private RushHourGUI parent;
+    private MainGUI parent;
     
-    public AnimationPanel(RushHourGUI parent) {
+    public AnimationPanel(MainGUI parent) {
         this.parent = parent;
         setLayout(new FlowLayout());
         initializeComponents();

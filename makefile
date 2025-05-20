@@ -30,8 +30,16 @@ build:
 # Compile the GUI source code
 build-gui:
 	@echo "Compiling GUI Java files..."
-	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/gui/RushHourGUI.java
+	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/gui/MainGUI.java
 	@echo "GUI compilation successful!"
+
+# Build executable JAR with GUI as main class
+jar:
+	@echo "Creating executable JAR..."
+	@mkdir -p $(BINDIR)
+	@$(JAVAC) $(JFLAGS) $(SRCDIR)/com/java/gui/MainGUI.java
+	@jar cvfe bin/YuukaFinder.jar com.java.gui.MainGUI -C bin .
+	@echo "Created executable JAR: bin/YuukaFinder.jar"
 
 # Run the program
 run:
@@ -43,7 +51,7 @@ run:
 	@$(JAVA) -cp $(BINDIR) $(MAIN) $(PUZZLE)
 
 run-gui:
-	@java -cp $(BINDIR) com.java.gui.RushHourGUI
+	@java -cp $(BINDIR) com.java.gui.MainGUI
 	
 # Help message
 help:

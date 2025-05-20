@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class RushHourGUI extends JFrame {
+public class MainGUI extends JFrame {
     private BoardPanel boardPanel;
     private ControlPanel controlPanel;
     private InfoPanel infoPanel;
@@ -21,7 +21,7 @@ public class RushHourGUI extends JFrame {
     private SolverResult result;
     private boolean solutionFound = false;
     
-    public RushHourGUI() {
+    public MainGUI() {
         setTitle("YuukaFinder: Rush Hour Solver");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -102,7 +102,7 @@ public class RushHourGUI extends JFrame {
                     
                     if (solutionPath.isEmpty()) {
                         infoPanel.updateStatus("No solution found");
-                        JOptionPane.showMessageDialog(RushHourGUI.this, 
+                        JOptionPane.showMessageDialog(MainGUI.this, 
                             "No solution found for this puzzle", 
                             "Solver Result", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -118,7 +118,7 @@ public class RushHourGUI extends JFrame {
                     
                 } catch (InterruptedException | ExecutionException e) {
                     infoPanel.updateStatus("Error solving puzzle");
-                    JOptionPane.showMessageDialog(RushHourGUI.this, 
+                    JOptionPane.showMessageDialog(MainGUI.this, 
                         "Error solving puzzle: " + e.getMessage(), 
                         "Solver Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -197,7 +197,7 @@ public class RushHourGUI extends JFrame {
         }
         
         SwingUtilities.invokeLater(() -> {
-            new RushHourGUI().setVisible(true);
+            new MainGUI().setVisible(true);
         });
     }
 }

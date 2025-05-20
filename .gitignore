@@ -6,3 +6,5 @@
 .vscode/
 
 test/solutions/*.txt
+
+*.jar
