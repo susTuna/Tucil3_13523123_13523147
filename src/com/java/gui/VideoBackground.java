@@ -27,7 +27,6 @@ public class VideoBackground {
                 Media media = new Media(file.toURI().toString());
                 activePlayer = new MediaPlayer(media);
                 activePlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                activePlayer.setMute(true); // Mute the player immediately
                 
                 MediaView view = new MediaView(activePlayer);
                 
@@ -48,10 +47,6 @@ public class VideoBackground {
                 fxPanel.setScene(scene);
                 activePlayer.play();
                 
-                // Double-check muting after player starts
-                activePlayer.setOnPlaying(() -> {
-                    activePlayer.setMute(true);
-                });
             } catch (Exception e) {
                 System.err.println("Error loading video: " + e.getMessage());
                 e.printStackTrace();

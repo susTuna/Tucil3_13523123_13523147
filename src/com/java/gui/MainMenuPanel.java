@@ -51,7 +51,7 @@ public class MainMenuPanel extends JPanel {
         // Wrap the preview in another panel with some padding
         JPanel previewWrapper = new JPanel();
         previewWrapper.setOpaque(false);
-        previewWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
         previewWrapper.add(preview);
         center.add(previewWrapper);
         contentPanel.add(center, BorderLayout.CENTER);
